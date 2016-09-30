@@ -8,7 +8,7 @@
 		<no_lock_screen>1</no_lock_screen>
 		<no_log>0</no_log>
 		<call_program>
-			<enable>1</enable>
+			<enable>0</enable>
 			<url>data\Program Test.exe</url>
 			<wait>1</wait>
 		</call_program>
