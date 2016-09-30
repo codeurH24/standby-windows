@@ -1,0 +1,76 @@
+v1.4.2710
+- moved all settings to xml file for portability
+- also moved totals log to xml file
+- fixed bug with bad date format
+
+v1.3.2699
+- Friendly error form
+- Changed the update-check function to work more reliable
+
+v1.3.2643
+- Added settings to registry that were not saved
+- Some cleaning in code (refactoring)
+- New Totals Log (not yet fully implemented)
+
+v1.3.24xx
+- Fixed a bug that was remembering the wrong graph size between runs.
+- Fixed a bug that casued FM to crash when certain text strings were larger than 64 chars.
+- Added adjustable font sizes to the Graphs menu item.
+
+v1.3.2376
+- Fixed bug where default text color was same as background.
+- Fixed bug where freemeter crashes trying to access HKLM without write permission.
+- Now allows per-user settings.
+- Now remembers if the desktop graph is hidden between runs.
+- Improved handling of Desktop Graph Location, Visibility, and saving the values between runs.
+- Added delay to the start-up update check.
+
+v1.3.2367
+- Fixed bug where notify icon doesnt update when desktop graph is hidden.
+- Added 32 megabit scale, mostly to keep wireless speeds from making my autoscaling jump back and fourth.
+- Added full ColorDialog for choosing colors, abandoned saturation and brightness sliders.
+- Added configurable text color so you can choose any background color youd like and still see text.
+
+v1.3.2365
+- Custom Simple Icons added by Miechu, you can even make your own, if you prefer less detailed Notify Icon.
+- Added Saturation/Brightness sliders and Grayscale options to colors available.
+- Fixed bug in update check, now correctly responds to your version being newer than web site.
+- Fixed bug that casued non-fatal error when attempting to get clipboard contents on Ping/Trace form load.
+- Fixed bug that caused Totals data to be multiplied by number of enabled adapters.
+- Added UPnP NAT Traversal Utility.
+
+v1.3.2173
+-Fixes a superficial bug with redrawing the borders of the graph on resize.
+-Fixes a problem with the ping utility crashing FM when packet Size > 65500.
+-Check For Updates on startup will not popup unless one is available, or you ask it.
+
+v1.3.2166
+-Fixes bug that causes a crash on startup after forced exit while desktop graph is hidden.
+
+v1.3.2163
+-Caught a couple of I/O exceptions in the email notifier.
+-New cumulative logging, last 24 hour graph, save to txt or html file periodically.
+-New check for update utility.
+-Menu rearranged a little, it was getting too long.
+
+v1.2.2157
+-Fixes a bug in the color cycling that caused an invalid operation.
+-New URL Grabber that opens URLs it sees on the clipboard in your browser.
+-readme.txt added to zip files and web site (dont worry, its not a manual).
+-Smaller memory footprint (attempts to free some ram every 30 seconds).
+
+v1.2.2154
+-Input Format Exceptions now caught rather than thrown.
+-Enabled visual styles for windows XP (didnt like the black form anyway).
+-Added support for IMAP email servers.
+-New Traceroute Utility, just cant have ping without traceroute.
+-Minor bug fixes and asthetic changes.
+
+v1.1.2149
+-Select colors and transparency.
+-New Email notifier, up to 5 accounts.
+-New Ping Utility, more functional than windows ping, with a GUI.
+-Minor bug fixes and asthetic changes.
+
+v1.0.2142
+-First major release

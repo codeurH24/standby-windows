@@ -1,0 +1,1 @@
+MsgBox( 0, "Programme Test", "Émulation d'un programme en action pendant 10 secondes" , 10 )

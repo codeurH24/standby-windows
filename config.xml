@@ -1,0 +1,17 @@
+<?xml version='1.0' standalone='yes'?>
+<configuration>
+	<programme>
+		<dirLocation_freemeter>FreeMeter_v1.4.2710</dirLocation_freemeter>
+		<byterate_max>650</byterate_max>
+		<standby_time>12</standby_time>
+		<low_limit_download>100</low_limit_download>
+		<shutdown>32</shutdown>
+		<no_lock_screen>1</no_lock_screen>
+		<no_log>0</no_log>
+		<call_program>
+			<enable>0</enable>
+			<url>data\Program Test.exe</url>
+			<wait>1</wait>
+		</call_program>
+	</programme>
+</configuration>

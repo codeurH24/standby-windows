@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Totals xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <counter_start_date>0001-01-01T00:00:00</counter_start_date>
+  <counter_uploaded>75102851450</counter_uploaded>
+  <counter_downloaded>20108933392</counter_downloaded>
+  <downloads>
+    <day date="28/09/2016" traffic="12880323961" />
+    <day date="30/09/2016" traffic="53920950" />
+    <day date="29/09/2016" traffic="1664654499" />
+    <day date="26/09/2016" traffic="60545155" />
+    <day date="27/09/2016" traffic="5449488827" />
+  </downloads>
+  <uploads>
+    <day date="28/09/2016" traffic="45042693522" />
+    <day date="30/09/2016" traffic="143752014" />
+    <day date="29/09/2016" traffic="10460299437" />
+    <day date="26/09/2016" traffic="395032155" />
+    <day date="27/09/2016" traffic="19061074322" />
+  </uploads>
+</Totals>
