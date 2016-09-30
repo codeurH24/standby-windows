@@ -77,9 +77,9 @@ While $setInactifUser = false or $nonStop = true
 
 
 	print ( "Relance ")
-	;lance ou relance freemeter
+	;lance ou relance DonwloadMeter
 	if initService_bandwidth() <> true Then
-	   MsgBox ( 0, "Program erreur", "FreeMeter est introuvable" , 60 )
+	   MsgBox ( 0, "Program erreur", "DonwloadMeter est introuvable" , 60 )
 	   Exit
 	Endif
 	Sleep(800)
@@ -141,6 +141,7 @@ While $setInactifUser = false or $nonStop = true
    print ( "debit detecter "& $birateMoyen  & " kB/s de moyenne"& @CRLF)
    if $birateMoyen > $LOW_LIMIT_DOWNLOAD Then
 	  $setInactifUser = false
+	  $mise_en_veille = false
    Else
 	  ; force la reverification d'une inactivité de l'utilisateur
 	  $setInactifUser = false
@@ -160,6 +161,19 @@ WEnd
 closeService_bandwidth()
 ; mise en veille du pc (valeur 32 par defaut)
 Shutdown( Int( Number($SHUTDOWN_TYPE) ))
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -340,29 +354,23 @@ Func averageBirateKB()
    Global $LOW_LIMIT_DOWNLOAD
 
    While $loopCount < 50
-	  ; recupere le debit a partir du program freemeter lancé
-	  Local $sBitrates = ControlGetText($hWnd_bandwidth, "", "[CLASS:WindowsForms10.STATIC.app.0.33c0d9d; INSTANCE:1]")
+	  ; recupere le debit a partir du program  lancé
+	  Local $sBitrates = ControlGetText("Network Usage Information NyxNight", "", "[CLASS:Static; INSTANCE:1]")
 
-	  ; determine la valeur si c'est en bytes ou kilo byte
-	  Local $iPosition = StringInStr($sBitrates, " B/s")
-	  if $iPosition Then
-		 ;ConsoleWrite ( "Débit en bytes"  )
-	  Endif
 
-	  Local $iPosition = StringInStr($sBitrates, " kB/s")
-	  if $iPosition Then
-		 ;ConsoleWrite ( "Débit en kilo bytes"  )
-		 $current_birate_inKB = Number($sBitrates)
-	  Endif
+	   $current_birate_inKB = Number($sBitrates)
 
-	  Local $iPosition = StringInStr($sBitrates, " mB/s")
-	  if $iPosition Then
-		 ;ConsoleWrite ( "Débit en mega bytes"  )
-		 $current_birate_inKB = Number($sBitrates) * 1000
-	  Endif
 
-	  ; calcule le birate
-	  $average_birate_inKB = ($average_birate_inKB + $current_birate_inKB ) /2
+
+
+		; calcule le birate
+		if $average_birate_inKB = 0 Then
+			$average_birate_inKB = $current_birate_inKB
+		Else
+			$average_birate_inKB = ($average_birate_inKB + $current_birate_inKB ) /2
+		EndIf
+
+
 
 		if $average_birate_inKB > $LOW_LIMIT_DOWNLOAD Then
 			return Int( $average_birate_inKB )
@@ -455,33 +463,32 @@ EndFunc
 
  Func initService_bandwidth()
 
-   Global $DIR_LOCATION_FREEMETER
-   Global $hWnd_bandwidth
+  Global $hWnd_bandwidth
 
-   ; si FreeMeter est deja lancer
-   consoleWrite ( "si FreeMeter est deja lancer"& @CRLF)
-   If WinExists("[CLASS:WindowsForms10.Window.8.app.0.33c0d9d]") Then
+
+
+
+   ; si DonwloadMeter est deja lancer
+
+   If WinExists("Network Usage Information NyxNight") Then
+	   print ( "DonwloadMeter est deja lancer"& @CRLF)
 	  return true
    Else
-	  ; Exécute le FreeMeter
-	  consoleWrite ( "Exécute le FreeMeter"& @CRLF)
-      Run($DIR_LOCATION_FREEMETER&"/FreeMeter.exe")
+	  ; Exécute le DonwloadMeter
+	  print ( "Exécute le DonwloadMeterr"& @CRLF)
+      Run("data/DonwloadMeter.exe")
    EndIf
 
 
 
 
+	; Attend que la fenêtre du DonwloadMeter apparaisse.
+	consoleWrite ( "Attend que la fenêtre du DonwloadMeter apparaisse. 20s"& @CRLF)
+    $hWnd_bandwidth = WinWait("Network Usage Information NyxNight", "", 20)
 
-
-
-
-    ; Attend que la fenêtre du FreeMeter apparaisse.
-	consoleWrite ( "Attend que la fenêtre du FreeMeter apparaisse. 20s"& @CRLF)
-    $hWnd_bandwidth = WinWait("[CLASS:WindowsForms10.Window.8.app.0.33c0d9d]", "", 20)
-
-   ; si FreeMeter est lancer
-   If WinExists("[CLASS:WindowsForms10.Window.8.app.0.33c0d9d]") Then
-	  ; cache de la fenêtre FreeMeter.
+   ; si DonwloadMeter est lancer
+   If WinExists("Network Usage Information NyxNight") Then
+	  ; cache de la fenêtre DonwloadMeter
 	  WinSetState($hWnd_bandwidth, "", @SW_HIDE)
    Else
 	  return false

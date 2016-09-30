@@ -25,9 +25,7 @@
    $LOW_LIMIT_DOWNLOAD = Number($low_limit_download[1])
    Global $LOW_LIMIT_DOWNLOAD
 
-   $dirLocation_freemeter = _XMLGetValue ( "/configuration/programme/dirLocation_freemeter" )
-   $DIR_LOCATION_FREEMETER = $dirLocation_freemeter[1]
-   Global $DIR_LOCATION_FREEMETER
+
 
 
    $shutdown_type = _XMLGetValue ( "/configuration/programme/shutdown" )
