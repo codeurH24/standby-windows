@@ -73,9 +73,6 @@ While $setInactifUser = false or $nonStop = true
 
 
 
-
-
-
 	print ( "Relance ")
 	;lance ou relance DonwloadMeter
 	if initService_bandwidth() <> true Then
@@ -136,23 +133,33 @@ While $setInactifUser = false or $nonStop = true
 
 
 
-   ; DETECTION D'un telechargement avec pour limite par defaut de 100 kB/s (voir fichier config)
-   $birateMoyen = averageBirateKB()
-   print ( "debit detecter "& $birateMoyen  & " kB/s de moyenne"& @CRLF)
-   if $birateMoyen > $LOW_LIMIT_DOWNLOAD Then
-	  $setInactifUser = false
-	  $mise_en_veille = false
-   Else
-	  ; force la reverification d'une inactivité de l'utilisateur
-	  $setInactifUser = false
-	  ; compteur d'inativité remis a zero
-	  $EPOCH = _NowCalc()
-	  ; fermeture du programme freemeter
-	  closeService_bandwidth()
-	  ; mise en veille du pc (valeur 32 par defaut)
-	  Shutdown( Int( Number($SHUTDOWN_TYPE) ))
-	  $mise_en_veille = true
-	  Sleep(3000)
+	; DETECTION D'un telechargement avec pour limite par defaut de 100 kB/s (voir fichier config)
+	$birateMoyen = averageBirateKB()
+	print ( "debit detecter "& $birateMoyen  & " kB/s de moyenne"& @CRLF)
+	if $birateMoyen > $LOW_LIMIT_DOWNLOAD Then
+		$setInactifUser = false
+		$mise_en_veille = false
+	Else
+		; lance un programme avant la mise en veille windows
+		if $CALL_PROGRAM_ENABLE = 1 Then
+			$CMD = '"'&  $CALL_PROGRAM_URL   &'"'
+			If $CALL_PROGRAM_WAIT = 1 Then
+				RunWait(@ComSpec & " /c " & $CMD)
+			Else
+				Run(@ComSpec & " /c " & $CMD)
+			Endif
+		Endif
+
+		; force la reverification d'une inactivité de l'utilisateur
+		$setInactifUser = false
+		; compteur d'inativité remis a zero
+		$EPOCH = _NowCalc()
+		; fermeture du programme freemeter
+		closeService_bandwidth()
+		; mise en veille du pc (valeur 32 par defaut)
+		Shutdown( Int( Number($SHUTDOWN_TYPE) ))
+		$mise_en_veille = true
+		Sleep(3000)
    EndIf
 WEnd
 
@@ -395,6 +402,7 @@ EndFunc
 Func closeService_bandwidth()
    Global $hWnd_bandwidth
    WinClose($hWnd_bandwidth)
+   WinClose("Network Usage Information NyxNight")
 EndFunc
 
 
