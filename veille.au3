@@ -344,7 +344,7 @@ Func waitActifUser()
 	  $aPosCache = $aPos[0]
 
 	  Sleep(300)
-	  ControlSetText('', '', 'Scintilla2', '')
+	  ;ControlSetText('', '', 'Scintilla2', '')
 	  consoleWrite ( "Wait "&$time& @CRLF)
 
 
@@ -474,45 +474,38 @@ EndFunc
 
  Func initService_bandwidth()
 
-  Global $hWnd_bandwidth
 
+	If ProcessExists("DonwloadMeter.exe") Then ; Check if the Notepad process is running.
+		print ( "DonwloadMeter est deja lancer"& @CRLF)
+		return true
+	Else
+		print ( "Exécute le DonwloadMeter " & @CRLF)
+		$PID = Run("data/DonwloadMeter.exe")
+		WinSetState(_GetHwndFromPID($PID), "", @SW_HIDE)
+		return true
+	EndIf
 
-
-
-   ; si DonwloadMeter est deja lancer
-
-   If WinExists("Network Usage Information NyxNight") Then
-	   print ( "DonwloadMeter est deja lancer"& @CRLF)
-	  return true
-   Else
-	  ; Exécute le DonwloadMeter
-	  print ( "Exécute le DonwloadMeterr"& @CRLF)
-      Run("data/DonwloadMeter.exe")
-   EndIf
-
-
-
-
-	; Attend que la fenêtre du DonwloadMeter apparaisse.
-	consoleWrite ( "Attend que la fenêtre du DonwloadMeter apparaisse. 20s"& @CRLF)
-    $hWnd_bandwidth = WinWait("Network Usage Information NyxNight", "", 20)
-
-   ; si DonwloadMeter est lancer
-   If WinExists("Network Usage Information NyxNight") Then
-	  ; cache de la fenêtre DonwloadMeter
-	  WinSetState($hWnd_bandwidth, "", @SW_HIDE)
-   Else
-	  return false
-   EndIf
-
-
-
-
-    Return true
  EndFunc   ;==> fin du programme
 
 
-
+Func _GetHwndFromPID($PID)
+    $hWnd = 0
+    $stPID = DllStructCreate("int")
+    Do
+        $winlist2 = WinList()
+        For $i = 1 To $winlist2[0][0]
+            If $winlist2[$i][0] <> "" Then
+                DllCall("user32.dll", "int", "GetWindowThreadProcessId", "hwnd", $winlist2[$i][1], "ptr", DllStructGetPtr($stPID))
+                If DllStructGetData($stPID, 1) = $PID Then
+                    $hWnd = $winlist2[$i][1]
+                    ExitLoop
+                EndIf
+            EndIf
+        Next
+        Sleep(100)
+    Until $hWnd <> 0
+    Return $hWnd
+EndFunc ;==>_GetHwndFromPID
 
 
 
