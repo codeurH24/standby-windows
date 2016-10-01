@@ -73,9 +73,6 @@ While $setInactifUser = false or $nonStop = true
 
 
 
-
-
-
 	print ( "Relance ")
 	;lance ou relance DonwloadMeter
 	if initService_bandwidth() <> true Then
@@ -122,17 +119,6 @@ While $setInactifUser = false or $nonStop = true
 		Endif
 		Sleep(500)
 	Until  $copierCollerEnCour = false
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -406,6 +392,7 @@ EndFunc
 Func closeService_bandwidth()
    Global $hWnd_bandwidth
    WinClose($hWnd_bandwidth)
+   WinClose("Network Usage Information NyxNight")
 EndFunc
 
 
