@@ -3,7 +3,7 @@
 #include <Date.au3>
 #include <MsgBoxConstants.au3>
 #include <FileConstants.au3>
-#include <MouseOnEvent.au3>
+; #include <MouseOnEvent.au3>
 #include <config.au3>
 #include <config_anykey.au3>
 
@@ -457,7 +457,7 @@ Func isInactifUser()
 		winFocusOffTitle("- YouTube -")
 
 		; detecte le mouvement (roulement) de la molette
-		_MouseSetOnEvent($MOUSE_WHEELSCROLL_EVENT, "moletteActifUser", 0, 1)
+		;_MouseSetOnEvent($MOUSE_WHEELSCROLL_EVENT, "moletteActifUser", 0, 1)
 	  Sleep(990)
    WEnd
 
