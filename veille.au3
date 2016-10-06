@@ -123,6 +123,7 @@ While $setInactifUser = false or $nonStop = true
 
 
 
+
 	; DETECTION D'un telechargement avec pour limite par defaut de 100 kB/s (voir fichier config)
 	$birateMoyen = averageBirateKB()
 	print ( "debit detecter "& $birateMoyen  & " kB/s de moyenne"& @CRLF)
@@ -147,9 +148,10 @@ While $setInactifUser = false or $nonStop = true
 		; fermeture du programme DownloadMeter
 		closeService_bandwidth()
 		; mise en veille du pc (valeur 32 par defaut)
-		Shutdown( Int( Number($SHUTDOWN_TYPE) ))
+		;Shutdown( Int( Number($SHUTDOWN_TYPE) ))
+		SoundPlay(@WindowsDir & "\media\Alarm10.wav", 1)
 		$mise_en_veille = true
-		Sleep(3000)
+
    EndIf
 WEnd
 
@@ -352,7 +354,7 @@ Func averageBirateKB()
 
    While $loopCount < 50
 	  ; recupere le debit a partir du program  lancé
-	  Local $sBitrates = ControlGetText("Network Usage Information NyxNight", "", "[CLASS:Static; INSTANCE:1]")
+	  Local $sBitrates = ControlGetText($hWnd_bandwidth, "", "[CLASS:Static; INSTANCE:1]")
 
 
 	   $current_birate_inKB = Number($sBitrates)
@@ -392,7 +394,6 @@ EndFunc
 Func closeService_bandwidth()
    Global $hWnd_bandwidth
    WinClose($hWnd_bandwidth)
-   WinClose("Network Usage Information NyxNight")
 EndFunc
 
 
@@ -460,15 +461,20 @@ EndFunc
 
 
  Func initService_bandwidth()
-
+	Global $hWnd_bandwidth
 
 	If ProcessExists("DonwloadMeter.exe") Then ; Check if the Notepad process is running.
 		print ( "DonwloadMeter est deja lancer"& @CRLF)
+		; si DonwloadMeter est deja lancer alor on recupere le handle de la fenetre DonwloadMeter
+		$aProcessList = ProcessList("DonwloadMeter.exe")
+		$hWnd_bandwidth = _GetHwndFromPID($aProcessList[1][1])
+
 		return true
 	Else
 		print ( "Exécute le DonwloadMeter " & @CRLF)
 		$PID = Run("data/DonwloadMeter.exe")
-		WinSetState(_GetHwndFromPID($PID), "", @SW_HIDE)
+		$hWnd_bandwidth = _GetHwndFromPID($PID)
+		WinSetState($hWnd_bandwidth , "", @SW_HIDE)
 		return true
 	EndIf
 
