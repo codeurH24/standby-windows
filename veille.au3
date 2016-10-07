@@ -151,6 +151,7 @@ While $setInactifUser = false or $nonStop = true
 		Shutdown( Int( Number($SHUTDOWN_TYPE) ))
 		;SoundPlay(@WindowsDir & "\media\Alarm10.wav", 1)
 		$mise_en_veille = true
+		sleep(8000)
 
    EndIf
 WEnd
@@ -394,6 +395,9 @@ EndFunc
 Func closeService_bandwidth()
    Global $hWnd_bandwidth
    WinClose($hWnd_bandwidth)
+   print( "PID "& $hWnd_bandwidth & @CRLF )
+   ProcessClose ( "DonwloadMeter.exe")
+   print( "close Service bandwidth " & @CRLF )
 EndFunc
 
 
@@ -437,7 +441,9 @@ Func isInactifUser()
 
 	  $NOW = _NowCalc()
 	  $time = Number( _DateDiff("s", $EPOCH, $NOW) )
-	  print ( "time " & $time & @CRLF)
+	  if $time > 0 Then
+		print ( "time " & $time & @CRLF)
+	  Endif
 
 
 		; detection de page youtube active.
@@ -468,13 +474,23 @@ EndFunc
 		; si DonwloadMeter est deja lancer alor on recupere le handle de la fenetre DonwloadMeter
 		$aProcessList = ProcessList("DonwloadMeter.exe")
 		$hWnd_bandwidth = _GetHwndFromPID($aProcessList[1][1])
-
+		print( "PID "& $hWnd_bandwidth & " - "& WinGetTitle ( $hWnd_bandwidth ) & @CRLF )
+		WinSetState($hWnd_bandwidth , "", @SW_HIDE)
+		;WinSetState($hWnd_bandwidth , "", @SW_SHOW)
 		return true
 	Else
 		print ( "Exécute le DonwloadMeter " & @CRLF)
 		$PID = Run("data/DonwloadMeter.exe")
-		$hWnd_bandwidth = _GetHwndFromPID($PID)
+
+		ProcessWait ( "DonwloadMeter.exe" )
+		Do
+			$aProcessList = ProcessList("DonwloadMeter.exe")
+			$hWnd_bandwidth = _GetHwndFromPID($aProcessList[1][1])
+		Until WinGetTitle ( $hWnd_bandwidth ) = "Network Usage Information NyxNight"
+
 		WinSetState($hWnd_bandwidth , "", @SW_HIDE)
+		;WinSetState($hWnd_bandwidth , "", @SW_SHOW)
+		print( "PID "& $hWnd_bandwidth & " - "& WinGetTitle ( $hWnd_bandwidth ) & @CRLF )
 		return true
 	EndIf
 
