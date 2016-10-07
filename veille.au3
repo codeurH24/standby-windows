@@ -148,8 +148,8 @@ While $setInactifUser = false or $nonStop = true
 		; fermeture du programme DownloadMeter
 		closeService_bandwidth()
 		; mise en veille du pc (valeur 32 par defaut)
-		;Shutdown( Int( Number($SHUTDOWN_TYPE) ))
-		SoundPlay(@WindowsDir & "\media\Alarm10.wav", 1)
+		Shutdown( Int( Number($SHUTDOWN_TYPE) ))
+		;SoundPlay(@WindowsDir & "\media\Alarm10.wav", 1)
 		$mise_en_veille = true
 
    EndIf
